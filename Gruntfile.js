@@ -10,7 +10,8 @@ module.exports = function(grunt) {
 	// 配置插件
 	grunt.initConfig({
 		cafemocha: {
-			all: { src: 'public/qa/tdd/tests-*.js', options: { ui: 'tdd' }, }
+			tdd: { src: 'public/qa/tdd/tests-*.js', options: { ui: 'tdd' }, },
+			stress: { src: 'public/qa/stress/tests-*.js', options: { ui: 'tdd' }, },
 		},
 		jshint: {
 			app: ['sever.js', 'public/js/**/*.js', 'lib/**/*.js'],

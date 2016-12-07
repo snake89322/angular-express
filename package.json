@@ -23,6 +23,7 @@
   "dependencies": {
     "express": "^4.14.0",
     "express-handlebars": "^3.0.0",
+    "loadtest": "^2.2.1",
     "mongoose": "^4.7.1"
   },
   "devDependencies": {

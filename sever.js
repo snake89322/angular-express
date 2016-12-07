@@ -49,11 +49,13 @@ app.use(function (err, req, res, next) {
   res.status(500);
   res.render('500');
 });
-
-// 单线程:多线程 服务应用
+ 
+// 应用集群扩展
 if (require.main === module) {
+  // 单线程
   startServer();
 } else {
+  // 多线程
   module.exports = startServer;
 } 
 
