@@ -23,29 +23,29 @@ app.use(express.static(__dirname + '/public'));
 app.use(require('./lib/use/show-tests.js')(app));
 
 // 环境配置
-switch (app.get('env')) {
-	case 'development':
-		mongoose.connect(credentials.mongo.development.connectionString, opts.mongo);
-		break;
-	case 'production':
-    app.enable('view cache');
-		mongoose.connect(credentials.mongo.production.connectionString, opts.mongo);
-		break;
-	default:
-		throw new Error('Unknown execution environment: ' + app.get('env'));
-}
+// switch (app.get('env')) {
+// 	case 'development':
+// 		mongoose.connect(credentials.mongo.development.connectionString, opts.mongo);
+// 		break;
+// 	case 'production':
+//     app.enable('view cache');
+// 		mongoose.connect(credentials.mongo.production.connectionString, opts.mongo);
+// 		break;
+// 	default:
+// 		throw new Error('Unknown execution environment: ' + app.get('env'));
+// }
 
 // 路由
 require('./routes/app/routes.js')(app); // 主域名路由
 require('./routes/app/funcs.js')(app); // 功能测试专用路由 非必要
 
-// 404管道
-app.use(function (req, res) {
-  res.status(404);
-  res.render('404');
-});
+// 404阀门
+// app.use(function (req, res) {
+//   res.status(404);
+//   res.render('404');
+// });
 
-// 定制500页面
+// 500阀门
 app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(500);

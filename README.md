@@ -61,22 +61,25 @@
 
 4、目录结构
 * lib - _用来保存模块的目录，一般都称为 lib（library 的缩写）_
+* lib/use - _中间件模块信息_
 * public - _放置UI相关文件_
-* public/vendor _放置第三方库文件_
-* public/qa _放置测试文件_
-* views _放置视图模板_
-* views/layouts _放置公用视图模板_
-* views/partials _放置组件视图模板_
-* views/other _放置other自定义视图模板_
-* models _放置数据库模型_
-* routes _放置express路由信息_
+* public/vendor - _放置第三方库文件_
+* public/qa - _放置测试文件_
+* views - _放置视图模板_
+* views/layouts - _放置公用视图模板_
+* views/partials - _放置组件视图模板_
+* views/other - _放置other自定义视图模板_
+* models - _放置数据库模型_
+* routes - _放置express路由信息_
+* routes/other  _放置other扩展路由信息（app、api、admin等）_
+* data - _文件&数据存储_
 
 5、文件结构
-* lib/opts.js _配置文件(包含但不限于exphbs、mongo配置)_
-* lib/static.js _静态资源地址（用于exphbs及服务器静态资源地址）_
-* views/layouts/main.hbs _公用模板_
-* credentials.js _证书文件（邮箱、数据库、cookie）_
-
+* lib/opts.js - _配置文件(包含但不限于exphbs、mongo配置)_
+* lib/static.js - _静态资源地址（用于exphbs及服务器静态资源地址）_
+* views/layouts/main.hbs - _公用模板_
+* credentials.js - _证书文件（邮箱、数据库、cookie）_
+* routes/app/routes.js - _主页面路由_
 
 ## NPM
 
@@ -88,7 +91,40 @@
 
 * mongodb相关
 ```sh
- npm install --save mongoose
+	npm install --save mongoose
+```
+
+* form-submit相关
+>我们必须指定 enctype="multipart/form-data" 来启用文件上传。
+>我们也可以通过 accept 属性来限制上传文件的类型（这是可选的）。
+```sh
+	npm install --save formidable
+```
+```sh
+	//
+	var form = new formidable.IncomingForm();
+	form.parse(req, function(err, fields, files){
+		// 表单域
+		console.log(fields);
+		// 文件
+		console.log(files);
+		...
+	});
+```
+>关于formidable：
+>你会发现表单字段如你预期的那样：是一个有字段名称属性的对象。
+>文件对象包含更多的数据，但这是相对简单的。
+>对于每一个上传的文件，你会看到属性有文件大小、上传路径（通常是在临时目录中的一个随机名字），还有用户上传此文件的原始名字（文件名，而不是整个路径，出于安全隐私考虑）。
+>接下来如何处理这个文件就取决于你了：可以将它保存到数据库，将其复制到更持久的位置，或者上传到云端文件存储系统。
+```sh
+	npm install --save body-parser // 只连入 json 和 urlencoded 的便利中间件
+```
+```sh
+	var bodyParser = require('body-parser');
+	// create application/json parser
+	var jsonParser = bodyParser.json();
+	// create application/x-www-form-urlencoded parser
+	var urlencodedParser = bodyParser.urlencoded({ extended: false });
 ```
 
 * QA相关
@@ -152,10 +188,31 @@
 	grunt.registerTask('test', ['cafemocha','jshint','exec']);
 ```
 
-[//]: # 
-(These are reference links used in the body of this note and get stripped out when the markdown processor does its job. 
+[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. 
 There is no need to format nicely because it shouldn't be seen. 
 Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
 [nodejs]: <http://nodejs.org/>
 [git]: <http://git-scm.com/>
+
+错误信息
+
+fs.js:681
+  return binding.rename(pathModule._makeLong(oldPath),
+                 ^
+Error: EXDEV: cross-device link not permitted, rename 'C:\Users\Sariel\AppData\Local\Temp\upload_29cd3fb7442385da3dbbd06c52b642c6' -> 'E:\A-Node\express\angular-express\data\fs\head.jpg\head.jpg'
+
+解决方案：
+http://stackoverflow.com/questions/12196163/node-js-fs-rename-doesnt-work
+var fs = require("fs"),
+util = require('util');
+...
+// fs.renameSync(file.path, dir + '/' + file.name);
+readStream = fs.createReadStream(file.path)
+writeStream = fs.createWriteStream(fsDir + '/' + file.name);
+readStream.pipe(writeStream);
+
+readStream.on("end", function() {
+	// Operation done
+	fs.unlinkSync(file.path);
+});
