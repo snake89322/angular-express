@@ -9,14 +9,13 @@
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Place favicon.ico in the root directory -->
-    {{!--<link rel="icon" href="/img/favicon.ico">--}}
+    {{!--<link rel="icon" href="favicon.ico">--}}
     <link rel="stylesheet" href="{{static '/vendor/html5-boilerplate/css/normalize.css'}}">
     <link rel="stylesheet" href="{{static '/vendor/html5-boilerplate/css/main.css'}}">
     <link rel="stylesheet" href="{{static '/vendor/bootstrap/css/bootstrap.min.css'}}">
-      
-    {{{_sections.head}}}
-    
     <script src="{{static '/vendor/html5-boilerplate/js/vendor/modernizr-2.8.3.min.js'}}"></script>
+
+    {{{_sections.head}}}    
 
     <!-- 在开发模式中跳过打包和缩小 -->
     {{!--{{#each _bundles.css}}

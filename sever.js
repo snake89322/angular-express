@@ -20,14 +20,15 @@ app.engine('hbs', exphbs.engine);
 app.set('view engine', 'hbs');
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public'));
-app.use(require('./lib/show-tests.js')(app));
+app.use(require('./lib/use/show-tests.js')(app));
 
-// 数据库连接
+// 环境配置
 switch (app.get('env')) {
 	case 'development':
 		mongoose.connect(credentials.mongo.development.connectionString, opts.mongo);
 		break;
 	case 'production':
+    app.enable('view cache');
 		mongoose.connect(credentials.mongo.production.connectionString, opts.mongo);
 		break;
 	default:
@@ -36,6 +37,7 @@ switch (app.get('env')) {
 
 // 路由
 require('./routes/app/routes.js')(app); // 主域名路由
+require('./routes/app/funcs.js')(app); // 功能测试专用路由 非必要
 
 // 404管道
 app.use(function (req, res) {
