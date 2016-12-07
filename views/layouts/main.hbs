@@ -46,17 +46,19 @@
         ga('create','UA-XXXXX-X','auto');ga('send','pageview');
     </script>
     
+    {{!-- 测试UI --}}
     {{#if showTests}}
+      <link rel="stylesheet" href="{{static '/vendor/unit-test/mocha.css'}}">
       <div id="mocha"></div>
-      <script src="/vendor/mocha.js" type="text/javascript" charset="utf-8"></script>
-      <script src="/vendor/chai.js" type="text/javascript" charset="utf-8"></script>
+      <script src="{{static '/vendor/unit-test/mocha.js'}}" ></script>
+      <script src="{{static '/vendor/unit-test/chai.js'}}" ></script>
       <script type="text/javascript">
       	mocha.ui('tdd');
       	var assert = chai.assert;
       </script>
-      <script src="/qa/tests-global.js" type="text/javascript" charset="utf-8"></script>
+      <script src="{{static '/qa/tests-global.js'}}"></script>
       {{#if pageTestScript}}
-        <script src="{{pageTestScript}}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{pageTestScript}}"></script>
       {{/if}}
       <script type="text/javascript">
       	mocha.run();
