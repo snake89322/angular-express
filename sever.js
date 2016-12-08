@@ -40,10 +40,10 @@ require('./routes/app/routes.js')(app); // 主域名路由
 require('./routes/app/funcs.js')(app); // 功能测试专用路由 非必要
 
 // 404阀门
-// app.use(function (req, res) {
-//   res.status(404);
-//   res.render('404');
-// });
+app.use(function (req, res) {
+  res.status(404);
+  res.render('404');
+});
 
 // 500阀门
 app.use(function (err, req, res, next) {

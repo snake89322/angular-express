@@ -20,6 +20,7 @@ module.exports = function (router) {
 	router.get('/funcs/fs', function (req, res) {	
 		var now = new Date();	
 		res.render('funcs/fs', {
+			title: 'funcs-fs',
 			year: now.getFullYear(),
 			month: now.getMonth()
 		});
