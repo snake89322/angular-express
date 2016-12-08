@@ -4,16 +4,18 @@
  */
 var fs = require('fs');
 var formidable = require('formidable');
+var fileUtils = require('../../lib/fileUtils.js');
 
 module.exports = function (router) {
 	//确保存在目录 data
 	var dataDir = process.cwd() + '/data';
 	var fsDir = dataDir + '/fs';
-	fs.existsSync(dataDir) || fs.mkdirSync(dataDir);
-	fs.existsSync(fsDir) || fs.mkdirSync(fsDir);
+	fileUtils.ensureDirExist(dataDir, fsDir);
+
 	function saveContestEntry(contestName, email, year, month, photoPath){
-		// TODO……这个稍后再做
-	}
+		// TODO……这个稍后再做 应该是上传数据库操作
+	};
+
 	// fs路由
 	router.get('/funcs/fs', function (req, res) {	
 		var now = new Date();	
@@ -25,27 +27,26 @@ module.exports = function (router) {
 
 	router.post('/funcs/fs/:year/:month', function (req, res) {
 		var form = new formidable.IncomingForm();
+		form.uploadDir = fsDir;
 		form.parse(req, function (err, fields, files) {
 			// 先跳转吧
 			if (err) return res.redirect(303, '/error');
 			if (err) {
 				// flash消息显示技术
 			}
+			var datamark = Date.parse(new Date());
 			var file = files.file;
-			var dir = fsDir + '/' + file.name;
-			var readStream, writeStream;
-			console.log(files);
-			// fs.mkdirSync(dir);
+			var upFile = fsDir + '/' + datamark + file.name;
 			
-			// fs.renameSync(file.path, dir + '/' + file.name);
-			readStream = fs.createReadStream(file.path)
-			writeStream = fs.createWriteStream(fsDir + '/' + file.name);
-			readStream.pipe(writeStream);
+			fs.renameSync(file.path, upFile);
 
-			readStream.on("end", function() {
-				// Operation done
-				fs.unlinkSync(file.path);
-			});
+			setTimeout( () => {
+				fs.unlink(upFile, (err) => {
+					if (err) throw err;
+					console.log('successfully deleted /tmp/hello');
+				});
+			}, 3000)
+			
 			return res.redirect(303, '/funcs/fs');
 		});
 	});

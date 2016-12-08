@@ -101,7 +101,6 @@
 	npm install --save formidable
 ```
 ```sh
-	//
 	var form = new formidable.IncomingForm();
 	form.parse(req, function(err, fields, files){
 		// 表单域
@@ -126,6 +125,13 @@
 	// create application/x-www-form-urlencoded parser
 	var urlencodedParser = bodyParser.urlencoded({ extended: false });
 ```
+>body-parser其中有四个函数: json(), raw(), text(), urlencoded()
+>分别是处理：json数据，Buffer数据流，文本数据，UTF-8的编码的数据。
+>在express项目中，通常顺序调用body-parser所提供的parser，
+>这样当一个parser无法满足post参数解析条件时，还可以使用另一个parser进行解析。（某些特殊请求可能都无法解析）
+>但body-parser的各个parser在解析过程中，若对满足条件的post参数进行了解析，req作为一个stream对象，已经被消耗
+>无法再使用另一个parser对post参数解析，也即post参数只能被第一个满足解析条件的parser进行解析。
+>因此即使先后使用raw、json、urlencode这三个parser，也只能得到一个body，具体格式由各parser的调用次序及post参数满足的解析条件决定。
 
 * QA相关
 >测试框架，这里用的是 Mocha:
@@ -194,25 +200,3 @@ Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdow
 
 [nodejs]: <http://nodejs.org/>
 [git]: <http://git-scm.com/>
-
-错误信息
-
-fs.js:681
-  return binding.rename(pathModule._makeLong(oldPath),
-                 ^
-Error: EXDEV: cross-device link not permitted, rename 'C:\Users\Sariel\AppData\Local\Temp\upload_29cd3fb7442385da3dbbd06c52b642c6' -> 'E:\A-Node\express\angular-express\data\fs\head.jpg\head.jpg'
-
-解决方案：
-http://stackoverflow.com/questions/12196163/node-js-fs-rename-doesnt-work
-var fs = require("fs"),
-util = require('util');
-...
-// fs.renameSync(file.path, dir + '/' + file.name);
-readStream = fs.createReadStream(file.path)
-writeStream = fs.createWriteStream(fsDir + '/' + file.name);
-readStream.pipe(writeStream);
-
-readStream.on("end", function() {
-	// Operation done
-	fs.unlinkSync(file.path);
-});
