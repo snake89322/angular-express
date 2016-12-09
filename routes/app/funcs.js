@@ -21,6 +21,7 @@ module.exports = function (router) {
 		var now = new Date();	
 		res.render('funcs/fs', {
 			title: 'funcs-fs',
+			disp: 'name',
 			year: now.getFullYear(),
 			month: now.getMonth()
 		});

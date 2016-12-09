@@ -12,6 +12,6 @@ suite('Stress tests', function () {
 			assert(!err);
 			assert(result.totalTimeSeconds < 1);
 			done();
-		})
-	})
-})
+		});
+	});
+});

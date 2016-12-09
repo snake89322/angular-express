@@ -9,8 +9,8 @@
   <noscript><link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/jquery.fileupload-ui-noscript.css'}}"></noscript>
   <style>
   /* Hide Angular JS elements before initializing */
-  .ng-cloak {
-    display: none;
+  .ng-cloak, .x-ng-cloak {
+    display: none !important;
   }
   </style>
 {{/section}}
@@ -45,6 +45,7 @@
     Supports cross-domain, chunked and resumable file uploads and client-side image resizing.<br>
     Works with any server-side platform (PHP, Python, Ruby on Rails, Java, Node.js, Go etc.) that supports standard HTML form file uploads.</p>
   </blockquote>
+
   <br>
   <!-- The file upload form used as target for the file upload widget -->
   <form 
@@ -52,45 +53,69 @@
     action="/funcs/fs/{{year}}/{{month}}" 
     method="POST" 
     enctype="multipart/form-data" 
-    data-ng-app="demo" 
-    data-ng-controller="DemoFileUploadController" 
+    ng-controller="DemoFileUploadController" 
+    ng-class="{'fileupload-processing': processing() || loadingFiles}"
     data-file-upload="options"
-    data-ng-class="{'fileupload-processing': processing() || loadingFiles}"
   >
     <!-- Redirect browsers with JavaScript disabled to the origin page -->
     <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>
-
     <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
     <div class="row fileupload-buttonbar">
       <div class="col-lg-7">
         <!-- The fileinput-button span is used to style the file input field as button -->
-        <span class="btn btn-success fileinput-button" ng-class="{disabled: disabled}">
+        <button class="btn btn-success fileinput-button" ng-class="{disabled: disabled}">
           <i class="glyphicon glyphicon-plus"></i>
           <span>Add files...</span>
           <input type="file" name="files[]" multiple ng-disabled="disabled">
-        </span>
-        <button type="button" class="btn btn-primary start" data-ng-click="submit()">
+        </button>
+
+        <button type="button" class="btn btn-primary start" ng-click="submit()">
           <i class="glyphicon glyphicon-upload"></i>
           <span>Start upload</span>
         </button>
-        <button type="button" class="btn btn-warning cancel" data-ng-click="cancel()">
+
+        <button type="button" class="btn btn-warning cancel" ng-click="cancel()">
           <i class="glyphicon glyphicon-ban-circle"></i>
           <span>Cancel upload</span>
         </button>
+
         <!-- The global file processing state -->
         <span class="fileupload-process"></span>
       </div>
+
       <!-- The global progress state -->
-      <div class="col-lg-5 fade" data-ng-class="{in: active()}">
+      <div class="col-lg-5 fade" ng-class="{in: active()}">
         <!-- The global progress bar -->
-        <div class="progress progress-striped active" data-file-upload-progress="progress()"><div class="progress-bar progress-bar-success" data-ng-style="{width: num + '%'}"></div></div>
+        <div class="progress progress-striped active" data-file-upload-progress="progress()">
+          <div class="progress-bar progress-bar-success" ng-style="{width: num + '%'}"></div>
+        </div>
         <!-- The extended global progress state -->
         <div class="progress-extended">&nbsp;</div>
       </div>
     </div>
+
+    <!-- The table listing the files available for upload/download -->
+    <table class="table table-striped files ng-cloak">
+      <tr ng-repeat="file in queue" ng-class="{'processing': file.$processing()}">
+        <td ng-switch on="!!file.thumbnailUrl">
+          <div class="preview" ng-switch-when="true">
+            <a ng-href="$file.url$" title="$file.name$" download="$file.name$" data-gallery><img ng-src="$file.thumbnailUrl$" alt=""></a>
+          </div>
+          <div class="preview" ng-switch-default data-file-upload-preview="file"></div>
+        </td>
+        
+        <td>
+          <p class="name" ng-switch on="!!file.url">
+
+          </p>
+        </td>
+
+      </tr>
+    </table>
   </form>
 </div>
 
 {{#section 'jquery'}}
-  <script src="//cdn.bootcss.com/angular.js/1.6.0/angular.min.js"></script>
+<script src="{{static '/modules/fs/ctrl.js'}}"></script>
+ 
 {{/section}}

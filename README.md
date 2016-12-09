@@ -65,6 +65,7 @@
 * public - _放置UI相关文件_
 * public/vendor - _放置第三方库文件_
 * public/qa - _放置测试文件_
+* public/modules - _放置angular模板_
 * views - _放置视图模板_
 * views/layouts - _放置公用视图模板_
 * views/partials - _放置组件视图模板_

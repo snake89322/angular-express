@@ -1,10 +1,10 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 	// 加载插件
 	[
 		'grunt-cafe-mocha',
 		'grunt-contrib-jshint',
 		'grunt-exec',
-	].forEach(function(task){
+	].forEach(function (task) {
 		grunt.loadNpmTasks(task);
 	});
 	// 配置插件
