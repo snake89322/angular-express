@@ -1,18 +1,18 @@
 {{#section 'head'}}
-  <!-- Generic page styles -->
-  <link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/style.css'}}">
-  <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
-  <link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/jquery.fileupload.css'}}">
-  <link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/jquery.fileupload-ui.css'}}">
-  <!-- CSS adjustments for browsers with JavaScript disabled -->
-  <noscript><link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/jquery.fileupload-noscript.css'}}"></noscript>
-  <noscript><link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/jquery.fileupload-ui-noscript.css'}}"></noscript>
-  <style>
-  /* Hide Angular JS elements before initializing */
-  .ng-cloak, .x-ng-cloak {
-    display: none !important;
-  }
-  </style>
+<!-- Generic page styles -->
+<link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/style.css'}}">
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/jquery.fileupload.css'}}">
+<link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/jquery.fileupload-ui.css'}}">
+<!-- CSS adjustments for browsers with JavaScript disabled -->
+<noscript><link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/jquery.fileupload-noscript.css'}}"></noscript>
+<noscript><link rel="stylesheet" href="{{static '/vendor/jquery-file-upload/css/jquery.fileupload-ui-noscript.css'}}"></noscript>
+<style>
+/* Hide Angular JS elements before initializing */
+.ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+</style>
 {{/section}}
 
 {{!-- 关于 jquery-file-upload --}}
@@ -57,6 +57,7 @@
     ng-class="{'fileupload-processing': processing() || loadingFiles}"
     data-file-upload="options"
   >
+    $a$
     <!-- Redirect browsers with JavaScript disabled to the origin page -->
     <noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>
     <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
@@ -95,7 +96,7 @@
     </div>
 
     <!-- The table listing the files available for upload/download -->
-    <table class="table table-striped files ng-cloak">
+    <table class="table table-striped files" ng-cloak>
       <tr ng-repeat="file in queue" ng-class="{'processing': file.$processing()}">
         <td ng-switch on="!!file.thumbnailUrl">
           <div class="preview" ng-switch-when="true">
@@ -106,16 +107,77 @@
         
         <td>
           <p class="name" ng-switch on="!!file.url">
-
+            <span ng-switch-when="true" ng-switch on="!!file.thumbnailUrl">
+              <a href="#" ng-switch-when="true" ng-href="$file.url$" title="$file.name$" download="$file.name$ data-gallery">$file.name$</a>
+              <a ng-switch-default ng-href="$file.url$" title="$file.name$" download="$file.name$">$file.name$</a>
+            </span>
+            <span ng-switch-default>$file.name$</span>
           </p>
+          <strong ng-show="file.error" class="error text-danger">$file.error$</strong>
         </td>
+        
+        <td>
+          <button type="button" class="btn btn-primary start" ng-click="file.$submit()" ng-hide="!file.$submit || options.autoUpload" ng-disabled="file.$state() == 'pending' || file.$state() == 'rejected'">
+            <i class="glyphicon glyphicon-upload"></i>
+            <span>Start</span>
+          </button>
 
+          <button type="button" class="btn btn-warning cancel" ng-click="file.$cancel()" ng-hide="!file.$cancel">
+            <i class="glyphicon glyphicon-ban-circle"></i>
+            <span>Cancel</span>
+          </button>
+
+          <button ng-controller="FileDestroyController" type="button" class="btn btn-danger destroy" ng-click="file.$destroy()" ng-hide="!file.$destroy">
+            <i class="glyphicon glyphicon-trash"></i>
+            <span>Delete</span>
+          </button>
+        </td>
       </tr>
     </table>
   </form>
+  <br>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Demo Notes</h3>
+    </div>
+    <div class="panel-body">
+      <ul>
+        <li>The maximum file size for uploads in this demo is <strong>999 KB</strong> (default file size is unlimited).</li>
+        <li>Only image files (<strong>JPG, GIF, PNG</strong>) are allowed in this demo (by default there is no file type restriction).</li>
+        <li>Uploaded files will be deleted automatically after <strong>5 minutes or less</strong> (demo files are stored in memory).</li>
+        <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage (see <a href="https://github.com/blueimp/jQuery-File-Upload/wiki/Browser-support">Browser support</a>).</li>
+        <li>Please refer to the <a href="https://github.com/blueimp/jQuery-File-Upload">project website</a> and <a href="https://github.com/blueimp/jQuery-File-Upload/wiki">documentation</a> for more information.</li>
+        <li>Built with the <a href="http://getbootstrap.com/">Bootstrap</a> CSS framework and Icons from <a href="http://glyphicons.com/">Glyphicons</a>.</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 {{#section 'jquery'}}
-<script src="{{static '/modules/fs/ctrl.js'}}"></script>
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="{{static '/vendor/jquery-file-upload/js/vendor/jquery.ui.widget.js'}}"></script>
+<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+<script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+<!-- The Canvas to Blob plugin is included for image resizing functionality -->
+<script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+<!-- blueimp Gallery script -->
+<script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="{{static '/vendor/jquery-file-upload/js/jquery.iframe-transport.js'}}"></script>
+<!-- The basic File Upload plugin -->
+<script src="{{static '/vendor/jquery-file-upload/js/jquery.fileupload.js'}}"></script>
+<!-- The File Upload processing plugin -->
+<script src="{{static '/vendor/jquery-file-upload/js/jquery.fileupload-process.js'}}"></script>
+<!-- The File Upload image preview & resize plugin -->
+<script src="{{static '/vendor/jquery-file-upload/js/jquery.fileupload-image.js'}}"></script>
+<!-- The File Upload audio preview plugin -->
+<script src="{{static '/vendor/jquery-file-upload/js/jquery.fileupload-audio.js'}}"></script>
+<!-- The File Upload video preview plugin -->
+<script src="{{static '/vendor/jquery-file-upload/js/jquery.fileupload-video.js'}}"></script>
+<!-- The File Upload validation plugin -->
+<script src="{{static '/vendor/jquery-file-upload/js/jquery.fileupload-validate.js'}}"></script>
+<!-- The File Upload Angular JS module -->
+<script src="{{static '/vendor/jquery-file-upload/js/jquery.fileupload-angular.js'}}"></script>
+<script src="{{static '/modules/funcs/fs/ctrl.js'}}"></script>
  
 {{/section}}
