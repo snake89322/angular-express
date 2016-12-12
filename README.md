@@ -134,6 +134,27 @@
 >无法再使用另一个parser对post参数解析，也即post参数只能被第一个满足解析条件的parser进行解析。
 >因此即使先后使用raw、json、urlencode这三个parser，也只能得到一个body，具体格式由各parser的调用次序及post参数满足的解析条件决定。
 
+* 使用jquery进行文件上传
+>让我们先从服务端设置
+```sh
+	npm install --save jquery-file-upload-middleware
+```
+>应用文件中添加以下代码
+```sh
+	var jqupload = require('jquery-file-upload-middleware');
+	app.use('/upload', function(req, res, next){
+		var now = Date.now();
+		jqupload.fileHandler({
+			uploadDir: function(){
+				return __dirname + '/public/uploads/' + now;
+			},
+			uploadUrl: function(){
+				return '/uploads/' + now;
+			},
+		})(req, res, next);
+	});
+```
+
 * QA相关
 >测试框架，这里用的是 Mocha:
 ```sh

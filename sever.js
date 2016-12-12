@@ -37,7 +37,7 @@ app.use(require('./lib/use/show-tests.js')(app));
 
 // 路由
 require('./routes/app/routes.js')(app); // 主域名路由
-require('./routes/app/funcs.js')(app); // 功能测试专用路由 非必要
+require('./routes/app/funcs/jquery-upload.js')(app); // 功能测试专用路由 非必要
 
 // 404阀门
 app.use(function (req, res) {

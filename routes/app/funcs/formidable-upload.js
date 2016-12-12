@@ -23,7 +23,7 @@ module.exports = function (router) {
 			title: 'funcs-fs',
 			disp: 'name',
 			year: now.getFullYear(),
-			month: now.getMonth()
+			month: now.getMonth() + 1
 		});
 	});
 
