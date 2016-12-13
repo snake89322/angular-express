@@ -41,12 +41,17 @@ module.exports = function (router) {
 	});
 
 	// funcs-jquery-upload 路由
-	router.get('/funcs/jquery-upload', function (req, res) {	
-		res.render('funcs/jquery-upload', {
-			title: 'funcs-jquery-upload',
+	router.get('/funcs/angular-upload', function (req, res) {	
+		res.render('funcs/angular-upload', {
+			title: 'funcs-angular-upload',
 			disp: 'name',
 			year: now.getFullYear(),
 			month: now.getMonth() + 1
 		});
+	});
+
+	router.post('/funcs/angular-upload/:year/:month', function (req, res) {
+		console.log('submit success!');
+		return res.redirect(303, '/funcs/angular-upload');
 	});
 };
