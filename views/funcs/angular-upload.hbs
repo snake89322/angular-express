@@ -95,22 +95,22 @@
       <tr ng-repeat="file in queue" ng-class="{'processing': file.$processing()}">
         <td ng-switch on="!!file.thumbnailUrl">
           <div class="preview" ng-switch-when="true">
-            <a ng-href="//file.url//" title="//file.name//" download="//file.name//" gallery><img ng-src="//file.thumbnailUrl//" alt=""></a>
+            <a ng-href="{% file.url %}" title="{% file.name %}" download="{% file.name %}" gallery><img ng-src="{% file.thumbnailUrl %}" alt=""></a>
           </div>
           <div class="preview" ng-switch-default file-upload-preview="file"></div>
         </td>
         <td>
           <p class="name" ng-switch on="!!file.url">
             <span ng-switch-when="true" ng-switch on="!!file.thumbnailUrl">
-              <a ng-switch-when="true" ng-href="//file.url//" title="//file.name//" download="//file.name//" gallery>//file.name//</a>
-              <a ng-switch-default ng-href="//file.url//" title="//file.name//" download="//file.name//">//file.name//</a>
+              <a ng-switch-when="true" ng-href="{% file.url %}" title="{% file.name %}" download="{% file.name %}" gallery>{% file.name %}</a>
+              <a ng-switch-default ng-href="{% file.url %}" title="{% file.name %}" download="{% file.name %}">{% file.name %}</a>
             </span>
-            <span ng-switch-default>//file.name//</span>
+            <span ng-switch-default>{% file.name %}</span>
           </p>
-          <strong ng-show="file.error" class="error text-danger">//file.error//</strong>
+          <strong ng-show="file.error" class="error text-danger">{% file.error %}</strong>
         </td>
         <td>
-          <p class="size">//file.size | formatFileSize//</p>
+          <p class="size">{% file.size | formatFileSize %}</p>
           <div class="progress progress-striped active fade" ng-class="{pending: 'in'}[file.$state()]" file-upload-progress="file.$progress()">
             <div class="progress-bar progress-bar-success" ng-style="{width: num + '%'}"></div>
           </div>

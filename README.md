@@ -65,7 +65,8 @@
 * public - _放置UI相关文件_
 * public/vendor - _放置第三方库文件_
 * public/qa - _放置测试文件_
-* public/modules - _放置angular模板_
+* public/modules - _放置angular模块信息（控制器&样式&脚本）_
+* data - _文件&数据存储_
 * views - _放置视图模板_
 * views/layouts - _放置公用视图模板_
 * views/partials - _放置组件视图模板_
@@ -73,7 +74,7 @@
 * models - _放置数据库模型_
 * routes - _放置express路由信息_
 * routes/other  _放置other扩展路由信息（app、api、admin等）_
-* data - _文件&数据存储_
+c
 
 5、文件结构
 * lib/opts.js - _配置文件(包含但不限于exphbs、mongo配置)_
@@ -154,7 +155,6 @@
 		})(req, res, next);
 	});
 ```
-
 * QA相关
 >测试框架，这里用的是 Mocha:
 ```sh
@@ -215,6 +215,14 @@
 ```sh
 	grunt.registerTask('test', ['cafemocha','jshint','exec']);
 ```
+
+##插件
+
+* Ueditor
+```sh
+	npm install ueditor --save
+```
+
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. 
 There is no need to format nicely because it shouldn't be seen. 

@@ -50,3 +50,9 @@ Temporary Items
 node_modules
 # ignore ~ backup file
 *~
+# ignore ueditor subcatalog
+/public/vendor/ueditor
+!/public/vendor/ueditor/config.json
+!/public/vendor/ueditor/ueditor.config.js
+# ignore data catalog
+/public/data

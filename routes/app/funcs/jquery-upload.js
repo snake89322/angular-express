@@ -37,7 +37,7 @@ module.exports = function (router) {
 		})(req, res, next);
 	});
 	jqupload.on('begin', function (fileInfo, req, res) {
-		console.log(fileInfo);
+		// console.log(fileInfo);
 	});
 
 	// funcs-jquery-upload 路由
