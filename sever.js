@@ -43,13 +43,13 @@ require('./routes/app/funcs/jquery-upload.js')(app); // 功能测试专用路由
 require('./routes/app/funcs/angular-upload.js')(app); // 功能测试专用路由 非必要
 require('./routes/app/funcs/ueditor.js')(app); // 功能测试专用路由 非必要
 
-// 404阀门
+// 404阀
 app.use(function (req, res) {
   res.status(404);
   res.render('404');
 });
 
-// 500阀门
+// 500阀
 app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(500);

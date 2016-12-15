@@ -24,7 +24,7 @@ module.exports = function (router) {
       // ueditor 客户发起上传图片请求
       if (req.query.action === 'uploadimage') {
         var foo = req.ueditor;
-        console.log(foo.filename); //exp.png
+        console.log(foo.filename); // exp.png
         console.log(foo.encoding); // 7bit
         console.log(foo.mimetype); // image/png
 
@@ -45,6 +45,12 @@ module.exports = function (router) {
       }
     })
   );
+
+  router.post('/funcs/ueditor/db', function (req, res) {
+    console.log(req.body.ueContent);
+    
+    res.json({success: true});
+  });
 
   router.get('/funcs/ueditor', function (req, res) {
     res.render('funcs/ueditor', {
