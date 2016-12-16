@@ -17,7 +17,7 @@
 * Gruntfile.js配置
 ```sh
 	module.exports = function(grunt) {
-		// 加载插件 
+		// 加载插件
 		[
 			'grunt-cafe-mocha',
 			'grunt-contrib-jshint',
